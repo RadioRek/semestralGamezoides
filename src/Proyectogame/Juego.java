@@ -26,14 +26,6 @@ public class Juego {
         }
         return miJuego;
     }
-    
-    public static Juego getMiJuego() {
-        return miJuego;
-    }
-
-    public static void setMiJuego(Juego aMiJuego) {
-        miJuego = aMiJuego;
-    }
 
     public String getTitulo() {
         return titulo;

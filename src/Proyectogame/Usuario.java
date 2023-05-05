@@ -21,14 +21,6 @@ public class Usuario {
         }
         return miUsuario;
     }
-
-    public static Usuario getMiUsuario() {
-        return miUsuario;
-    }
-
-    public static void setMiUsuario(Usuario aMiUsuario) {
-        miUsuario = aMiUsuario;
-    }
     
     public String getCorreo() {
         return correo;

@@ -23,8 +23,6 @@ public class Transaccion {
         return miTransaccion;
     }
     
-    
-
     public int getIdEstado() {
         return idEstado;
     }
@@ -33,14 +31,6 @@ public class Transaccion {
         this.idEstado = idEstado;
     }
 
-    public static Transaccion getMiTransaccion() {
-        return miTransaccion;
-    }
-
-    public static void setMiTransaccion(Transaccion miTransaccion) {
-        Transaccion.miTransaccion = miTransaccion;
-    }
-    
     public String getVendedor() {
         return vendedor;
     }

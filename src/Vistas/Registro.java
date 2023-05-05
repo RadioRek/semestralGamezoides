@@ -1,17 +1,15 @@
 package Vistas;
 
 import Controlador.Conexion;
-import Proyectogame.FiltroNombre;
-import Proyectogame.FiltroPassword;
-import Proyectogame.Usuario;
+import static Controlador.Conexion.getConexion;
 import static Proyectogame.Usuario.getUsuario;
 import java.sql.Date;
+import java.time.Year;
 import javax.swing.JOptionPane;
-import javax.swing.text.AbstractDocument;
 
 public class Registro extends javax.swing.JFrame {
 
-    Conexion con = Conexion.getConexion();
+    Conexion con = getConexion();
 
     public Registro() {
         initComponents();
@@ -19,7 +17,6 @@ public class Registro extends javax.swing.JFrame {
         con.conectar();
         setLocationRelativeTo(null);
 
-        // AGREGAR IF PARA LA CANTIDAD DE DIAS SEGUN EL MES!!!
         for (int i = 1; i < 32; i++) {
             cDia.addItem(String.valueOf(i));
         }
@@ -29,16 +26,6 @@ public class Registro extends javax.swing.JFrame {
         for (int i = 1960; i < 2023; i++) {
             cAno.addItem(String.valueOf(i));
         }
-
-        //filtros para los campos de texto
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        AbstractDocument document1 = (AbstractDocument) jtNombre.getDocument();
-        document1.setDocumentFilter(new FiltroNombre());
-        AbstractDocument document2 = (AbstractDocument) jtApellido.getDocument();
-        document2.setDocumentFilter(new FiltroNombre());
-        AbstractDocument document3 = (AbstractDocument) jpContraseña.getDocument();
-        document3.setDocumentFilter(new FiltroPassword());
-
     }
 
     @SuppressWarnings("unchecked")
@@ -124,6 +111,11 @@ public class Registro extends javax.swing.JFrame {
         jtCorreo.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jtCorreo.setMinimumSize(new java.awt.Dimension(64, 25));
         jtCorreo.setPreferredSize(new java.awt.Dimension(71, 25));
+        jtCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtCorreoKeyPressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -135,6 +127,11 @@ public class Registro extends javax.swing.JFrame {
         jtNombre.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jtNombre.setMinimumSize(new java.awt.Dimension(64, 25));
         jtNombre.setPreferredSize(new java.awt.Dimension(71, 25));
+        jtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtNombreKeyPressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -146,6 +143,11 @@ public class Registro extends javax.swing.JFrame {
         jtApellido.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jtApellido.setMinimumSize(new java.awt.Dimension(64, 25));
         jtApellido.setPreferredSize(new java.awt.Dimension(71, 25));
+        jtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtApellidoKeyPressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -181,9 +183,14 @@ public class Registro extends javax.swing.JFrame {
         panelPrincipal.add(cMes, gridBagConstraints);
 
         cAno.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        cAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1999" }));
+        cAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1959" }));
         cAno.setMinimumSize(new java.awt.Dimension(72, 25));
         cAno.setPreferredSize(new java.awt.Dimension(72, 25));
+        cAno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cAnoActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -206,6 +213,11 @@ public class Registro extends javax.swing.JFrame {
 
         jpContraseña.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jpContraseña.setPreferredSize(new java.awt.Dimension(71, 25));
+        jpContraseña.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jpContraseñaKeyPressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -259,6 +271,7 @@ public class Registro extends javax.swing.JFrame {
         if ((!jtNombre.getText().trim().isEmpty()
                 || !jtApellido.getText().trim().isEmpty()
                 || !jpContraseña.getText().trim().isEmpty())
+                || !jtCorreo.getText().trim().isEmpty()
                 && jtCorreo.getText().trim().matches("^[a-zA-Z0-9_\\-\\.]+@[a-zA-Z0-9_\\-\\.]+\\.[a-zA-Z]{2,4}$")) {
 
             getUsuario().setCorreo(jtCorreo.getText());
@@ -306,29 +319,11 @@ public class Registro extends javax.swing.JFrame {
                 cDia.addItem(String.valueOf(i));
             }
         }
-        if (Integer.parseInt((String) cAno.getSelectedItem()) / 4 == 0) {
-            if (Integer.parseInt((String) cAno.getSelectedItem()) / 100 == 0) {
-                if (Integer.parseInt((String) cAno.getSelectedItem()) / 400 == 0) {
-                    if (cMes.getSelectedIndex() == 1) {
-                        cDia.removeAllItems();
-                        for (int i = 1; i < 30; i++) {
-                            cDia.addItem(String.valueOf(i));
-                        }
-                    }
-                } else {
-                    if (cMes.getSelectedIndex() == 1) {
-                        cDia.removeAllItems();
-                        for (int i = 1; i < 29; i++) {
-                            cDia.addItem(String.valueOf(i));
-                        }
-                    }
-                }
-            } else {
-                if (cMes.getSelectedIndex() == 1) {
-                    cDia.removeAllItems();
-                    for (int i = 1; i < 30; i++) {
-                        cDia.addItem(String.valueOf(i));
-                    }
+        if (Year.isLeap(Integer.parseInt((String) cAno.getSelectedItem()))) {
+            if (cMes.getSelectedIndex() == 1) {
+                cDia.removeAllItems();
+                for (int i = 1; i < 30; i++) {
+                    cDia.addItem(String.valueOf(i));
                 }
             }
         } else {
@@ -340,6 +335,64 @@ public class Registro extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_cMesActionPerformed
+
+    private void cAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cAnoActionPerformed
+        if (Year.isLeap(Integer.parseInt((String) cAno.getSelectedItem()))) {
+            if (cMes.getSelectedIndex() == 1) {
+                cDia.removeAllItems();
+                for (int i = 1; i < 30; i++) {
+                    cDia.addItem(String.valueOf(i));
+                }
+            }
+        } else {
+            if (cMes.getSelectedIndex() == 1) {
+                cDia.removeAllItems();
+                for (int i = 1; i < 29; i++) {
+                    cDia.addItem(String.valueOf(i));
+                }
+            }
+        }
+    }//GEN-LAST:event_cAnoActionPerformed
+
+    private void jtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtNombreKeyPressed
+        char c = evt.getKeyChar();
+        if (!(Character.isLetter(c))) {
+            evt.consume();
+        }
+        if (jtNombre.getText().trim().length() >= 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtNombreKeyPressed
+
+    private void jtApellidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtApellidoKeyPressed
+        char c = evt.getKeyChar();
+        if (!(Character.isLetter(c))) {
+            evt.consume();
+        }
+        if (jtApellido.getText().trim().length() >= 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtApellidoKeyPressed
+
+    private void jtCorreoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtCorreoKeyPressed
+        char c = evt.getKeyChar();
+        if (c == ' ') {
+            evt.consume();
+        }
+        if (jtCorreo.getText().trim().length() >= 80) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtCorreoKeyPressed
+
+    private void jpContraseñaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpContraseñaKeyPressed
+        char c = evt.getKeyChar();
+        if (c == ' ') {
+            evt.consume();
+        }
+        if (jpContraseña.getText().trim().length() >= 80) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jpContraseñaKeyPressed
 
     public static void main(String args[]) {
 

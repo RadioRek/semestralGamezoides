@@ -1,7 +1,6 @@
 package Vistas;
 
 import Controlador.Conexion;
-import Proyectogame.FiltroPassword;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 
@@ -12,7 +11,6 @@ public class InicioSesion extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         AbstractDocument document1 = (AbstractDocument) jpContraseña.getDocument();
-        document1.setDocumentFilter(new FiltroPassword());
         con.conectar();
         
     }

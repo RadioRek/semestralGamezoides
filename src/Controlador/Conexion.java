@@ -14,14 +14,14 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Conexion {
-
     public Connection con;
-    
     public static Conexion miConexion;
 
+    // CONSTRUCTOR PRIVADO SINGLETON
     private Conexion() {
     }
 
+    // METODO GET PARA PATRON SINGLETON
     public static synchronized Conexion getConexion() {
         if (miConexion == null) {
             miConexion = new Conexion();
@@ -29,6 +29,7 @@ public class Conexion {
         return miConexion;
     }
 
+    // METODO PARA CONECTAR LISTO!
     public void conectar() {
         try {
             con = DriverManager.getConnection(
@@ -42,8 +43,8 @@ public class Conexion {
         }
     }
 
+    // METODO PARA INICIAR SESION LISTO!
     public Boolean iniciarSesion(String correoUsuario, String contrasenaUsuario) {
-
         try {
             String declaracionSQL
                     = "SELECT correoUsuario "
@@ -56,7 +57,7 @@ public class Conexion {
             if (resultado.next()) {
                 declaracion.close();
                 return true;
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Contraseña o usuario incorrecto", "No se ha podido ingresar", JOptionPane.PLAIN_MESSAGE);
                 declaracion.close();
                 return false;
@@ -68,8 +69,8 @@ public class Conexion {
         }
     }
 
+    // METODO PARA AGREGAR USUARIO LISTO!
     public boolean agregarUsuario(Usuario us) {
-
         try {
             String insertSQL
                     = "INSERT INTO usuario "
@@ -94,28 +95,32 @@ public class Conexion {
         }
     }
 
-    public void agregarJuego(Juego ju) {
-
+    // METODO PARA AGREGAR JUEGO LISTO!
+    public boolean agregarJuego(Juego ju) {
         try {
             String insertSQL
-                    = "INSERT INTO videojuego "
-                    + "(titulo, nombre_estudio, rating_esrb, idioma, plataforma, caratula, valor) " // genero =! sexo
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    = "INSERT INTO juego "
+                    + "(titulo, estudio, descripcion, rating, idioma, plataforma, precio, caratula, correoDueno) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement dec = con.prepareStatement(insertSQL);
             dec.setString(1, ju.getTitulo());
             dec.setString(2, ju.getEstudio());
-            dec.setString(3, ju.getRating());
-            dec.setString(4, ju.getIdioma());
-            dec.setString(5, ju.getPlataforma());
-            dec.setBlob(6, ju.getCaratula());
+            dec.setString(3, ju.getDescripcion());
+            dec.setString(4, ju.getRating());
+            dec.setString(5, ju.getIdioma());
+            dec.setString(6, ju.getPlataforma());
             dec.setInt(7, ju.getValor());
+            dec.setBlob(8, ju.getCaratula());
+            dec.setString(9, ju.getCorreoDueño());
             dec.executeUpdate();
             dec.close();
             JOptionPane.showMessageDialog(null, "Se agrego el juego", "Exito", JOptionPane.PLAIN_MESSAGE);
+            return true;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
             System.out.println(e.getMessage());
             System.out.println(e);
+            return false;
         }
     }
 
