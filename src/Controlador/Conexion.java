@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Conexion {
+
     public Connection con;
     public static Conexion miConexion;
 
@@ -124,6 +125,37 @@ public class Conexion {
         }
     }
 
+    // METODO PARA LLENAR TABLA SIN FILTRO LISTO!
+    public void llenarTabla(JTable tabla) {
+        try {
+            String declaracionSQL
+                    = "SELECT "
+                    + "titulo, estudio, plataforma, idioma, precio, rating, codJuego "
+                    + "FROM juego";
+
+            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
+            ResultSet resultado = declaracion.executeQuery(declaracionSQL);
+
+            while (resultado.next()) {
+                String titulo = resultado.getString("titulo");
+                String estudio = resultado.getString("estudio");
+                String plataforma = resultado.getString("plataforma");
+                String idioma = resultado.getString("idioma");
+                String valor = String.valueOf(resultado.getInt("precio"));
+                String rating = resultado.getString("rating");
+                String idJuego = String.valueOf(resultado.getInt("codJuego"));
+                String datostabla[] = {titulo, estudio, plataforma, idioma, valor, rating, idJuego};
+                DefaultTableModel dtb = (DefaultTableModel) tabla.getModel();
+                dtb.addRow(datostabla);
+            }
+            declaracion.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
+            System.out.println(e.getMessage());
+            System.out.println(e);
+        }
+    }
+
     public void llenarTablaFavoritos(JTable tabla, String Usuario) {
 
         try {
@@ -140,37 +172,6 @@ public class Conexion {
                 String titulo = resultado.getString("videojuego.titulo");
                 String codJuego = resultado.getString("videojuego_usuarios.id_videojuego");
                 String datostabla[] = {titulo, codJuego};
-                DefaultTableModel dtb = (DefaultTableModel) tabla.getModel();
-                dtb.addRow(datostabla);
-            }
-            declaracion.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
-            System.out.println(e.getMessage());
-            System.out.println(e);
-        }
-    }
-
-    public void llenarTabla(JTable tabla) {
-
-        try {
-            String declaracionSQL
-                    = "SELECT "
-                    + "titulo, nombre_estudio, rating_esrb, idioma, plataforma, valor, id_videojuego "
-                    + "FROM videojuego";
-
-            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
-            ResultSet resultado = declaracion.executeQuery(declaracionSQL);
-
-            while (resultado.next()) {
-                String titulo = resultado.getString("titulo");
-                String estudio = resultado.getString("nombre_estudio");
-                String rating = resultado.getString("rating_esrb");
-                String idioma = resultado.getString("idioma");
-                String plataforma = resultado.getString("plataforma");
-                String valor = String.valueOf(resultado.getInt("valor"));
-                String idJuego = String.valueOf(resultado.getInt("id_videojuego"));
-                String datostabla[] = {titulo, estudio, plataforma, idioma, valor, rating, idJuego};
                 DefaultTableModel dtb = (DefaultTableModel) tabla.getModel();
                 dtb.addRow(datostabla);
             }

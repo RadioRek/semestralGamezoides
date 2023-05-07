@@ -3,6 +3,7 @@ package Vistas;
 import Controlador.Conexion;
 import static Controlador.Conexion.getConexion;
 import static Proyectogame.Usuario.getUsuario;
+import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.time.Year;
 import javax.swing.JOptionPane;
@@ -356,7 +357,8 @@ public class Registro extends javax.swing.JFrame {
 
     private void jtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtNombreKeyPressed
         char c = evt.getKeyChar();
-        if (!(Character.isLetter(c))) {
+        int keyCode = evt.getKeyCode();
+        if (!(Character.isLetter(c) || keyCode == KeyEvent.VK_DELETE || keyCode == KeyEvent.VK_BACK_SPACE || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT)) {
             evt.consume();
         }
         if (jtNombre.getText().trim().length() >= 50) {
@@ -366,7 +368,7 @@ public class Registro extends javax.swing.JFrame {
 
     private void jtApellidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtApellidoKeyPressed
         char c = evt.getKeyChar();
-        if (!(Character.isLetter(c))) {
+        if (!(Character.isLetter(c)) || !(c == evt.VK_DELETE)) {
             evt.consume();
         }
         if (jtApellido.getText().trim().length() >= 50) {

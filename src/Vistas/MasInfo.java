@@ -14,9 +14,9 @@ public class MasInfo extends javax.swing.JFrame {
 
         panelPrincipal = new javax.swing.JPanel();
         jlImagen = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        labelDesc = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jtaDesc = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -30,17 +30,17 @@ public class MasInfo extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         panelPrincipal.add(jlImagen, gridBagConstraints);
 
-        jLabel1.setText("Descripcion:");
+        labelDesc.setText("Descripcion:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        panelPrincipal.add(jLabel1, gridBagConstraints);
+        panelPrincipal.add(labelDesc, gridBagConstraints);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jtaDesc.setColumns(20);
+        jtaDesc.setRows(5);
+        jScrollPane1.setViewportView(jtaDesc);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -68,10 +68,10 @@ public class MasInfo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     public javax.swing.JLabel jlImagen;
+    private javax.swing.JTextArea jtaDesc;
+    private javax.swing.JLabel labelDesc;
     private javax.swing.JPanel panelPrincipal;
     // End of variables declaration//GEN-END:variables
 }
