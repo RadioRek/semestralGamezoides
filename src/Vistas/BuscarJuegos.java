@@ -1,23 +1,19 @@
 package Vistas;
 
-import Controlador.Conexion;
+import static Controlador.Conexion.getConexion;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 public class BuscarJuegos extends javax.swing.JFrame {
-
-    Conexion con = Conexion.getConexion();
 
     public BuscarJuegos() {
         initComponents();
-        con.conectar();
-        con.llenarTabla(tabJuegos);
+        getConexion().conectar();
+        getConexion().llenarTabla(tabJuegos);
         jlUsuario.setVisible(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        bFavorito.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -30,7 +26,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabJuegos = new javax.swing.JTable();
         bFavorito = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        labelBuscar = new javax.swing.JLabel();
         jtBusqueda = new javax.swing.JTextField();
         bBuscar = new javax.swing.JButton();
         bMasInfo = new javax.swing.JButton();
@@ -46,11 +42,6 @@ public class BuscarJuegos extends javax.swing.JFrame {
         cBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Titulo", "Estudio", "Plataforma", "Rating" }));
         cBuscar.setMinimumSize(new java.awt.Dimension(92, 25));
         cBuscar.setPreferredSize(new java.awt.Dimension(92, 25));
-        cBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cBuscarActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -103,14 +94,14 @@ public class BuscarJuegos extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         mainPanel.add(bFavorito, gridBagConstraints);
 
-        jLabel1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        jLabel1.setText("Buscar por:");
+        labelBuscar.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        labelBuscar.setText("Buscar por:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        mainPanel.add(jLabel1, gridBagConstraints);
+        mainPanel.add(labelBuscar, gridBagConstraints);
 
         jtBusqueda.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jtBusqueda.setMinimumSize(new java.awt.Dimension(64, 25));
@@ -178,64 +169,35 @@ public class BuscarJuegos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBuscarActionPerformed
-
-        if (cBuscar.getSelectedItem().equals("Titulo")) {
+        if (jtBusqueda.getText().trim().isEmpty()) {
             DefaultTableModel model = (DefaultTableModel) tabJuegos.getModel();
             model.setRowCount(0);
-            con.conectar();
-            con.llenarTablaTitulo(tabJuegos, jtBusqueda.getText());
-
-        } else if (cBuscar.getSelectedItem().equals("Estudio")) {
-            DefaultTableModel model = (DefaultTableModel) tabJuegos.getModel();
-            model.setRowCount(0);
-            con.conectar();
-            con.llenarTablaEstudio(tabJuegos, jtBusqueda.getText());
-
-        } else if (cBuscar.getSelectedItem().equals("Plataforma")) {
-            DefaultTableModel model = (DefaultTableModel) tabJuegos.getModel();
-            model.setRowCount(0);
-            con.conectar();
-            con.llenarTablaPlataforma(tabJuegos, jtBusqueda.getText());
-
-        } else if (cBuscar.getSelectedItem().equals("Rating")) {
-            DefaultTableModel model = (DefaultTableModel) tabJuegos.getModel();
-            model.setRowCount(0);
-            con.conectar();
-            con.llenarTablaRating(tabJuegos, jtBusqueda.getText());
+            getConexion().llenarTabla(tabJuegos);
         } else {
             DefaultTableModel model = (DefaultTableModel) tabJuegos.getModel();
             model.setRowCount(0);
-            con.conectar();
-            con.llenarTabla(tabJuegos);
+            getConexion().llenarTablaFiltro(tabJuegos, jtBusqueda.getText(), String.valueOf(cBuscar.getSelectedItem()));
         }
     }//GEN-LAST:event_bBuscarActionPerformed
 
     private void bFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFavoritoActionPerformed
-        con.conectar();
-        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 6));
-        Integer intIdJuego = Integer.valueOf(strIdJuego);
-        if (con.revisarFavorito(intIdJuego, jlUsuario.getText())) {
-            con.agregarFavorito(intIdJuego, jlUsuario.getText());
-        } else {
-            JOptionPane.showMessageDialog(null, "Ya tienes ese juego como favorito", "Error", JOptionPane.PLAIN_MESSAGE);
-        }
+        int intIdJuego = Integer.parseInt(String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 6)));
+        if (!getConexion().revisarFavorito(intIdJuego, jlUsuario.getText())) {
+            getConexion().agregarFavorito(intIdJuego, jlUsuario.getText());
+        } 
     }//GEN-LAST:event_bFavoritoActionPerformed
 
     private void bMasInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bMasInfoActionPerformed
-
         MasInfo mInfo = new MasInfo();
         String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 6));
-        Integer intIdJuego = Integer.valueOf(strIdJuego);
-        con.obtenerCaratula(intIdJuego, mInfo.jlImagen);
+        int intIdJuego = Integer.parseInt(strIdJuego);
+        getConexion().obtenerMasInfo(intIdJuego, mInfo.jlImagen, mInfo.jtaDesc);
         mInfo.revalidate();
         mInfo.repaint();
         mInfo.pack();
+        mInfo.setLocationRelativeTo(null);
         mInfo.setVisible(true);
     }//GEN-LAST:event_bMasInfoActionPerformed
-
-    private void cBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBuscarActionPerformed
-        
-    }//GEN-LAST:event_cBuscarActionPerformed
 
     public static void main(String args[]) {
 
@@ -252,10 +214,10 @@ public class BuscarJuegos extends javax.swing.JFrame {
     private javax.swing.JButton bMasInfo;
     private javax.swing.JButton buyButton;
     private javax.swing.JComboBox<String> cBuscar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JLabel jlUsuario;
     private javax.swing.JTextField jtBusqueda;
+    private javax.swing.JLabel labelBuscar;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTable tabJuegos;
     // End of variables declaration//GEN-END:variables

@@ -1,6 +1,5 @@
 package Vistas;
 
-import Controlador.Conexion;
 import static Controlador.Conexion.getConexion;
 import static Proyectogame.Juego.getJuego;
 import java.awt.Image;
@@ -130,8 +129,8 @@ public class AnadirJuego extends javax.swing.JFrame {
         jtTitulo.setMinimumSize(new java.awt.Dimension(250, 25));
         jtTitulo.setPreferredSize(new java.awt.Dimension(250, 25));
         jtTitulo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtTituloKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtTituloKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -143,8 +142,8 @@ public class AnadirJuego extends javax.swing.JFrame {
         jtEstudio.setMinimumSize(new java.awt.Dimension(250, 25));
         jtEstudio.setPreferredSize(new java.awt.Dimension(250, 25));
         jtEstudio.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtEstudioKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtEstudioKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -158,8 +157,8 @@ public class AnadirJuego extends javax.swing.JFrame {
         jtIdioma.setMinimumSize(new java.awt.Dimension(250, 25));
         jtIdioma.setPreferredSize(new java.awt.Dimension(250, 25));
         jtIdioma.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtIdiomaKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtIdiomaKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -173,8 +172,8 @@ public class AnadirJuego extends javax.swing.JFrame {
         jtPlataforma.setMinimumSize(new java.awt.Dimension(250, 25));
         jtPlataforma.setPreferredSize(new java.awt.Dimension(250, 25));
         jtPlataforma.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtPlataformaKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtPlataformaKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -188,8 +187,8 @@ public class AnadirJuego extends javax.swing.JFrame {
         jtValor.setMinimumSize(new java.awt.Dimension(250, 25));
         jtValor.setPreferredSize(new java.awt.Dimension(250, 25));
         jtValor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtValorKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtValorKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -258,10 +257,11 @@ public class AnadirJuego extends javax.swing.JFrame {
         panelPrincipal.add(jLabel8, gridBagConstraints);
 
         jtaDesc.setColumns(20);
+        jtaDesc.setLineWrap(true);
         jtaDesc.setRows(5);
         jtaDesc.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtaDescKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtaDescKeyTyped(evt);
             }
         });
         jScrollPane1.setViewportView(jtaDesc);
@@ -282,8 +282,8 @@ public class AnadirJuego extends javax.swing.JFrame {
         panelPrincipal.add(jLabel9, gridBagConstraints);
 
         jtOwner.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtOwnerKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtOwnerKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -304,11 +304,12 @@ public class AnadirJuego extends javax.swing.JFrame {
             File img = selector.getSelectedFile();
             try {
                 imagen = new ImageIcon(img.getAbsolutePath());
-                imagenEscalada = imagen.getImage().getScaledInstance(200, 300, Image.SCALE_SMOOTH);
+                imagenEscalada = imagen.getImage().getScaledInstance(350, 500, Image.SCALE_SMOOTH);
                 fis = new FileInputStream(img);
                 getJuego().setCaratula(fis);
                 jlImg.setIcon(new ImageIcon(imagenEscalada));
                 pack();
+                setLocationRelativeTo(null);
                 JOptionPane.showMessageDialog(null, "La imagen se ha cargado correctamente.", "Imagen cargada", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "No se ha podido cargar la imagen", "Error al cargar la imagen", JOptionPane.ERROR_MESSAGE);
@@ -335,17 +336,38 @@ public class AnadirJuego extends javax.swing.JFrame {
             getJuego().setPlataforma(jtPlataforma.getText());
             getJuego().setValor(Integer.valueOf((String) jtValor.getText()));
             getJuego().setCorreoDueño(jtOwner.getText());
-            
             getConexion().conectar();
-            getConexion().agregarJuego(getJuego());
+            if(getConexion().agregarJuego(getJuego())){
+                dispose();
+            }
             
-            dispose();
+            
+            
+            
         } else {
             JOptionPane.showMessageDialog(null, "Falta rellenar campos", "Error", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_bAnadirActionPerformed
 
-    private void jtIdiomaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtIdiomaKeyPressed
+    private void jtTituloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtTituloKeyTyped
+        if (jtTitulo.getText().trim().length() >= 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtTituloKeyTyped
+
+    private void jtEstudioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtEstudioKeyTyped
+        if (jtEstudio.getText().trim().length() >= 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtEstudioKeyTyped
+
+    private void jtaDescKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtaDescKeyTyped
+        if (jtaDesc.getText().trim().length() >= 300) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtaDescKeyTyped
+
+    private void jtIdiomaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtIdiomaKeyTyped
         char c = evt.getKeyChar();
         if (!Character.isLetter(c)) {
             evt.consume();
@@ -353,9 +375,15 @@ public class AnadirJuego extends javax.swing.JFrame {
         if (jtIdioma.getText().trim().length() >= 30) {
             evt.consume();
         }
-    }//GEN-LAST:event_jtIdiomaKeyPressed
+    }//GEN-LAST:event_jtIdiomaKeyTyped
 
-    private void jtValorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtValorKeyPressed
+    private void jtPlataformaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtPlataformaKeyTyped
+        if (jtPlataforma.getText().trim().length() >= 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtPlataformaKeyTyped
+
+    private void jtValorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtValorKeyTyped
         char c = evt.getKeyChar();
         if (!Character.isDigit(c)) {
             evt.consume();
@@ -363,9 +391,9 @@ public class AnadirJuego extends javax.swing.JFrame {
         if (jtValor.getText().trim().length() >= 6) {
             evt.consume();
         }
-    }//GEN-LAST:event_jtValorKeyPressed
+    }//GEN-LAST:event_jtValorKeyTyped
 
-    private void jtOwnerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtOwnerKeyPressed
+    private void jtOwnerKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtOwnerKeyTyped
         char c = evt.getKeyChar();
         if (c == ' ') {
             evt.consume();
@@ -373,31 +401,7 @@ public class AnadirJuego extends javax.swing.JFrame {
         if (jtOwner.getText().trim().length() >= 80) {
             evt.consume();
         }
-    }//GEN-LAST:event_jtOwnerKeyPressed
-
-    private void jtTituloKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtTituloKeyPressed
-        if (jtTitulo.getText().trim().length() >= 50) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_jtTituloKeyPressed
-
-    private void jtEstudioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtEstudioKeyPressed
-        if (jtEstudio.getText().trim().length() >= 50) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_jtEstudioKeyPressed
-
-    private void jtaDescKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtaDescKeyPressed
-        if (jtaDesc.getText().trim().length() >= 300) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_jtaDescKeyPressed
-
-    private void jtPlataformaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtPlataformaKeyPressed
-        if (jtPlataforma.getText().trim().length() >= 10) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_jtPlataformaKeyPressed
+    }//GEN-LAST:event_jtOwnerKeyTyped
 
     public static void main(String args[]) {
 

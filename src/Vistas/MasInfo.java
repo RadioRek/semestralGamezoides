@@ -32,19 +32,20 @@ public class MasInfo extends javax.swing.JFrame {
 
         labelDesc.setText("Descripcion:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         panelPrincipal.add(labelDesc, gridBagConstraints);
 
         jtaDesc.setColumns(20);
+        jtaDesc.setLineWrap(true);
         jtaDesc.setRows(5);
         jScrollPane1.setViewportView(jtaDesc);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         panelPrincipal.add(jScrollPane1, gridBagConstraints);
@@ -70,7 +71,7 @@ public class MasInfo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JLabel jlImagen;
-    private javax.swing.JTextArea jtaDesc;
+    public javax.swing.JTextArea jtaDesc;
     private javax.swing.JLabel labelDesc;
     private javax.swing.JPanel panelPrincipal;
     // End of variables declaration//GEN-END:variables

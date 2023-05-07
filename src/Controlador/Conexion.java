@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 public class Conexion {
@@ -101,7 +102,7 @@ public class Conexion {
         try {
             String insertSQL
                     = "INSERT INTO juego "
-                    + "(titulo, estudio, descripcion, rating, idioma, plataforma, precio, caratula, correoDueno) "
+                    + "(titulo, estudio, descripcion, rating, idioma, plataforma, precio, caratula, correoUsuario) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement dec = con.prepareStatement(insertSQL);
             dec.setString(1, ju.getTitulo());
@@ -131,7 +132,7 @@ public class Conexion {
             String declaracionSQL
                     = "SELECT "
                     + "titulo, estudio, plataforma, idioma, precio, rating, codJuego "
-                    + "FROM juego";
+                    + "FROM juego;";
 
             PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
             ResultSet resultado = declaracion.executeQuery(declaracionSQL);
@@ -156,6 +157,115 @@ public class Conexion {
         }
     }
 
+    // METODO LLENAR TABLA CON FILTRO LISTO!
+    public void llenarTablaFiltro(JTable tabla, String busqueda, String filtro) {
+
+        try {
+            String declaracionSQL
+                    = "SELECT "
+                    + "titulo, estudio, plataforma, idioma, precio, rating, codJuego "
+                    + "FROM juego "
+                    + "WHERE " + filtro + " = '" + busqueda + "';";
+
+            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
+
+            ResultSet resultado = declaracion.executeQuery(declaracionSQL);
+
+            while (resultado.next()) {
+                String titulo = resultado.getString("titulo");
+                String estudio = resultado.getString("estudio");
+                String plataforma = resultado.getString("plataforma");
+                String idioma = resultado.getString("idioma");
+                String valor = String.valueOf(resultado.getInt("precio"));
+                String rating = resultado.getString("rating");
+                String idJuego = String.valueOf(resultado.getInt("codJuego"));
+                String datostabla[] = {titulo, estudio, plataforma, idioma, valor, rating, idJuego};
+                DefaultTableModel dtb = (DefaultTableModel) tabla.getModel();
+                dtb.addRow(datostabla);
+            }
+            declaracion.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
+            System.out.println(e.getMessage());
+            System.out.println(e);
+        }
+    }
+
+    public void agregarFavorito(int idJuego, String usuario) {
+
+        try {
+            String insertSQL
+                    = "INSERT INTO favorito "
+                    + "(codJuego, correoUsuario) "
+                    + "VALUES (?, ?)";
+            PreparedStatement dec = con.prepareStatement(insertSQL);
+            dec.setInt(1, idJuego);
+            dec.setString(2, usuario);
+            dec.executeUpdate();
+            dec.close();
+            JOptionPane.showMessageDialog(null, "Se agrego el juego como favorito", "Exito", JOptionPane.PLAIN_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
+            System.out.println(e.getMessage());
+            System.out.println(e);
+        }
+    }
+
+    public boolean revisarFavorito(int idJuego, String usuario) {
+
+        try {
+            String declaracionSQL
+                    = "SELECT * "
+                    + "FROM favorito "
+                    + "WHERE codJuego = ? AND correoUsuario = ?";
+            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
+            declaracion.setInt(1, idJuego);
+            declaracion.setString(2, usuario);
+            ResultSet resultado = declaracion.executeQuery();
+            if (resultado.next()) {
+                declaracion.close();
+                return true;
+            } else {
+                declaracion.close();
+                JOptionPane.showMessageDialog(null, "Ya tienes ese juego como favorito", "Error", JOptionPane.PLAIN_MESSAGE);
+                return false;
+
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
+            System.out.println(e.getMessage());
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public void obtenerMasInfo(int codJuego, JLabel label, JTextArea tArea) {
+
+        try {
+            String declaracionSQL
+                    = "SELECT "
+                    + "caratula, descripcion "
+                    + "FROM juego "
+                    + "WHERE codJuego = '" + codJuego + "';";
+            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
+            ResultSet resultado = declaracion.executeQuery(declaracionSQL);
+            if (resultado.next()) {
+                byte[] bytes = resultado.getBytes("caratula");
+                ImageIcon img = new ImageIcon(bytes);
+                Image imagenEscalada = img.getImage().getScaledInstance(350, 500, Image.SCALE_SMOOTH);
+                label.setIcon(new ImageIcon(imagenEscalada));
+                tArea.setText(resultado.getString("descripcion"));
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo obtener la informacion", "Error", JOptionPane.PLAIN_MESSAGE);
+            }
+            declaracion.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
+            System.out.println(e.getMessage());
+            System.out.println(e);
+        }
+    }
+    
     public void llenarTablaFavoritos(JTable tabla, String Usuario) {
 
         try {
@@ -183,181 +293,6 @@ public class Conexion {
         }
     }
 
-    public void llenarTablaTitulo(JTable tabla, String buscarTi) {
-
-        try {
-            String declaracionSQL
-                    = "SELECT "
-                    + "titulo, nombre_estudio, rating_esrb, idioma, plataforma, valor, id_videojuego "
-                    + "FROM videojuego "
-                    + "WHERE titulo = '" + buscarTi + "'";
-
-            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
-
-            ResultSet resultado = declaracion.executeQuery(declaracionSQL);
-
-            while (resultado.next()) {
-                String titulo = resultado.getString("titulo");
-                String estudio = resultado.getString("nombre_estudio");
-                String rating = resultado.getString("rating_esrb");
-                String idioma = resultado.getString("idioma");
-                String plataforma = resultado.getString("plataforma");
-                String valor = String.valueOf(resultado.getInt("valor"));
-                String idJuego = String.valueOf(resultado.getInt("id_videojuego"));
-                String datostabla[] = {titulo, estudio, plataforma, idioma, valor, rating, idJuego};
-                DefaultTableModel dtb = (DefaultTableModel) tabla.getModel();
-                dtb.addRow(datostabla);
-            }
-            declaracion.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
-            System.out.println(e.getMessage());
-            System.out.println(e);
-        }
-    }
-
-    public void llenarTablaEstudio(JTable tabla, String buscarEs) {
-
-        try {
-            String declaracionSQL
-                    = "SELECT "
-                    + "titulo, nombre_estudio, rating_esrb, idioma, plataforma, valor, id_videojuego "
-                    + "FROM videojuego "
-                    + "WHERE titulo = '" + buscarEs + "'";
-
-            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
-
-            ResultSet resultado = declaracion.executeQuery(declaracionSQL);
-
-            while (resultado.next()) {
-                String titulo = resultado.getString("titulo");
-                String estudio = resultado.getString("nombre_estudio");
-                String rating = resultado.getString("rating_esrb");
-                String idioma = resultado.getString("idioma");
-                String plataforma = resultado.getString("plataforma");
-                String valor = String.valueOf(resultado.getInt("valor"));
-                String idJuego = String.valueOf(resultado.getInt("id_videojuego"));
-                String datostabla[] = {titulo, estudio, plataforma, idioma, valor, rating, idJuego};
-                DefaultTableModel dtb = (DefaultTableModel) tabla.getModel();
-                dtb.addRow(datostabla);
-            }
-            declaracion.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
-            System.out.println(e.getMessage());
-            System.out.println(e);
-        }
-    }
-
-    public void llenarTablaPlataforma(JTable tabla, String buscarPl) {
-
-        try {
-            String declaracionSQL
-                    = "SELECT "
-                    + "titulo, nombre_estudio, rating_esrb, idioma, plataforma, valor, id_videojuego "
-                    + "FROM videojuego "
-                    + "WHERE titulo = '" + buscarPl + "'";
-
-            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
-            ResultSet resultado = declaracion.executeQuery(declaracionSQL);
-
-            while (resultado.next()) {
-                String titulo = resultado.getString("titulo");
-                String estudio = resultado.getString("nombre_estudio");
-                String rating = resultado.getString("rating_esrb");
-                String idioma = resultado.getString("idioma");
-                String plataforma = resultado.getString("plataforma");
-                String valor = String.valueOf(resultado.getInt("valor"));
-                String idJuego = String.valueOf(resultado.getInt("id_videojuego"));
-                String datostabla[] = {titulo, estudio, plataforma, idioma, valor, rating, idJuego};
-                DefaultTableModel dtb = (DefaultTableModel) tabla.getModel();
-                dtb.addRow(datostabla);
-            }
-            declaracion.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
-            System.out.println(e.getMessage());
-            System.out.println(e);
-        }
-    }
-
-    public void llenarTablaRating(JTable tabla, String buscarRa) {
-
-        try {
-            String declaracionSQL
-                    = "SELECT "
-                    + "titulo, nombre_estudio, rating_esrb, idioma, plataforma, valor, id_videojuego "
-                    + "FROM videojuego "
-                    + "WHERE titulo = '" + buscarRa + "'";
-            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
-            ResultSet resultado = declaracion.executeQuery(declaracionSQL);
-
-            while (resultado.next()) {
-                String titulo = resultado.getString("titulo");
-                String estudio = resultado.getString("nombre_estudio");
-                String rating = resultado.getString("rating_esrb");
-                String idioma = resultado.getString("idioma");
-                String plataforma = resultado.getString("plataforma");
-                String valor = String.valueOf(resultado.getInt("valor"));
-                String idJuego = String.valueOf(resultado.getInt("id_videojuego"));
-                String datostabla[] = {titulo, estudio, plataforma, idioma, valor, rating, idJuego};
-                DefaultTableModel dtb = (DefaultTableModel) tabla.getModel();
-                dtb.addRow(datostabla);
-            }
-            declaracion.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
-            System.out.println(e.getMessage());
-            System.out.println(e);
-        }
-    }
-
-    public Boolean revisarFavorito(Integer idJuego, String usuario) {
-
-        try {
-            String declaracionSQL
-                    = "SELECT * "
-                    + "FROM videojuego_usuarios "
-                    + "WHERE id_videojuego = ? AND email = ?";
-            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
-            declaracion.setInt(1, idJuego);
-            declaracion.setString(2, usuario);
-            ResultSet resultado = declaracion.executeQuery();
-            if (resultado.next()) {
-                declaracion.close();
-                return false;
-            } else {
-                declaracion.close();
-                return true;
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
-            System.out.println(e.getMessage());
-            System.out.println(e);
-            return false;
-        }
-    }
-
-    public void agregarFavorito(Integer idJuego, String usuario) {
-
-        try {
-            String insertSQL
-                    = "INSERT INTO videojuego_usuarios "
-                    + "(id_videojuego, email) "
-                    + "VALUES (?, ?)";
-            PreparedStatement dec = con.prepareStatement(insertSQL);
-            dec.setInt(1, idJuego);
-            dec.setString(2, usuario);
-            dec.executeUpdate();
-            dec.close();
-            JOptionPane.showMessageDialog(null, "Se agrego el juego como favorito", "Exito", JOptionPane.PLAIN_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
-            System.out.println(e.getMessage());
-            System.out.println(e);
-        }
-    }
-
     public void quitarFavorito(Integer codJuego, String Usuario) {
 
         try {
@@ -375,30 +310,6 @@ public class Conexion {
         }
     }
 
-    public void obtenerCaratula(Integer codJuego, JLabel label) {
-
-        try {
-            String declaracionSQL
-                    = "SELECT "
-                    + "caratula "
-                    + "FROM videojuego "
-                    + "WHERE id_videojuego = '" + codJuego + "'";
-            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
-            ResultSet resultado = declaracion.executeQuery(declaracionSQL);
-            if (resultado.next()) {
-                byte[] bytes = resultado.getBytes("caratula");
-                ImageIcon img = new ImageIcon(bytes);
-                Image imagenEscalada = img.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
-                label.setIcon(new ImageIcon(imagenEscalada));
-            } else {
-                JOptionPane.showMessageDialog(null, "El juego no tiene imagen", "Error", JOptionPane.PLAIN_MESSAGE);
-            }
-            declaracion.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion", "Error", JOptionPane.PLAIN_MESSAGE);
-            System.out.println(e.getMessage());
-            System.out.println(e);
-        }
-    }
+    
 
 }

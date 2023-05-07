@@ -3,7 +3,6 @@ package Vistas;
 import Controlador.Conexion;
 import static Controlador.Conexion.getConexion;
 import static Proyectogame.Usuario.getUsuario;
-import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.time.Year;
 import javax.swing.JOptionPane;
@@ -113,8 +112,8 @@ public class Registro extends javax.swing.JFrame {
         jtCorreo.setMinimumSize(new java.awt.Dimension(64, 25));
         jtCorreo.setPreferredSize(new java.awt.Dimension(71, 25));
         jtCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtCorreoKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtCorreoKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -129,8 +128,8 @@ public class Registro extends javax.swing.JFrame {
         jtNombre.setMinimumSize(new java.awt.Dimension(64, 25));
         jtNombre.setPreferredSize(new java.awt.Dimension(71, 25));
         jtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtNombreKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtNombreKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -145,8 +144,8 @@ public class Registro extends javax.swing.JFrame {
         jtApellido.setMinimumSize(new java.awt.Dimension(64, 25));
         jtApellido.setPreferredSize(new java.awt.Dimension(71, 25));
         jtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtApellidoKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtApellidoKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -215,8 +214,8 @@ public class Registro extends javax.swing.JFrame {
         jpContraseña.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jpContraseña.setPreferredSize(new java.awt.Dimension(71, 25));
         jpContraseña.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jpContraseñaKeyPressed(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jpContraseñaKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -355,28 +354,27 @@ public class Registro extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cAnoActionPerformed
 
-    private void jtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtNombreKeyPressed
+    private void jtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtNombreKeyTyped
         char c = evt.getKeyChar();
-        int keyCode = evt.getKeyCode();
-        if (!(Character.isLetter(c) || keyCode == KeyEvent.VK_DELETE || keyCode == KeyEvent.VK_BACK_SPACE || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT)) {
-            evt.consume();
-        }
-        if (jtNombre.getText().trim().length() >= 50) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_jtNombreKeyPressed
-
-    private void jtApellidoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtApellidoKeyPressed
-        char c = evt.getKeyChar();
-        if (!(Character.isLetter(c)) || !(c == evt.VK_DELETE)) {
+        if (!(Character.isLetter(c))) {
             evt.consume();
         }
         if (jtApellido.getText().trim().length() >= 50) {
             evt.consume();
         }
-    }//GEN-LAST:event_jtApellidoKeyPressed
+    }//GEN-LAST:event_jtNombreKeyTyped
 
-    private void jtCorreoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtCorreoKeyPressed
+    private void jtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtApellidoKeyTyped
+        char c = evt.getKeyChar();
+        if (!(Character.isLetter(c))) {
+            evt.consume();
+        }
+        if (jtApellido.getText().trim().length() >= 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtApellidoKeyTyped
+
+    private void jtCorreoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtCorreoKeyTyped
         char c = evt.getKeyChar();
         if (c == ' ') {
             evt.consume();
@@ -384,9 +382,9 @@ public class Registro extends javax.swing.JFrame {
         if (jtCorreo.getText().trim().length() >= 80) {
             evt.consume();
         }
-    }//GEN-LAST:event_jtCorreoKeyPressed
+    }//GEN-LAST:event_jtCorreoKeyTyped
 
-    private void jpContraseñaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpContraseñaKeyPressed
+    private void jpContraseñaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpContraseñaKeyTyped
         char c = evt.getKeyChar();
         if (c == ' ') {
             evt.consume();
@@ -394,7 +392,7 @@ public class Registro extends javax.swing.JFrame {
         if (jpContraseña.getText().trim().length() >= 80) {
             evt.consume();
         }
-    }//GEN-LAST:event_jpContraseñaKeyPressed
+    }//GEN-LAST:event_jpContraseñaKeyTyped
 
     public static void main(String args[]) {
 
