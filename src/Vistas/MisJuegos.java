@@ -1,17 +1,19 @@
 package Vistas;
 
-import Controlador.Conexion;
+import static Controlador.Conexion.getConexion;
 import javax.swing.table.DefaultTableModel;
 
 public class MisJuegos extends javax.swing.JFrame {
-
-    Integer jug = 0;
 
     public MisJuegos() {
         initComponents();
         jlUsuario.setVisible(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        getConexion().conectar();
+        DefaultTableModel model = (DefaultTableModel) tabJuegos.getModel();
+        model.setRowCount(0);
+        getConexion().llenarTablaFavoritos(tabJuegos, jlUsuario.getText());
     }
 
     @SuppressWarnings("unchecked")
@@ -120,11 +122,7 @@ public class MisJuegos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bActualizarActionPerformed
-        Conexion con = Conexion.getConexion();
-        con.conectar();
-        DefaultTableModel model = (DefaultTableModel) tabJuegos.getModel();
-        model.setRowCount(0);
-        con.llenarTablaFavoritos(tabJuegos, jlUsuario.getText());
+        getConexion().llenarTablaFavoritos(tabJuegos, jlUsuario.getText());
     }//GEN-LAST:event_bActualizarActionPerformed
 
     private void bVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVolverActionPerformed
