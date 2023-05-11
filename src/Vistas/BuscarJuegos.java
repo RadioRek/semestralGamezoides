@@ -44,6 +44,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         mainPanel.add(cBuscar, gridBagConstraints);
@@ -89,6 +90,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         mainPanel.add(bFavorito, gridBagConstraints);
@@ -98,6 +100,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         mainPanel.add(labelBuscar, gridBagConstraints);
@@ -108,7 +111,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 175;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         mainPanel.add(jtBusqueda, gridBagConstraints);
@@ -126,6 +129,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         mainPanel.add(bBuscar, gridBagConstraints);
 
@@ -142,6 +146,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         mainPanel.add(bMasInfo, gridBagConstraints);
@@ -153,6 +158,11 @@ public class BuscarJuegos extends javax.swing.JFrame {
         mainPanel.add(jlUsuario, gridBagConstraints);
 
         buyButton.setText("Comprar juego");
+        buyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buyButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
@@ -197,6 +207,12 @@ public class BuscarJuegos extends javax.swing.JFrame {
         mInfo.setLocationRelativeTo(null);
         mInfo.setVisible(true);
     }//GEN-LAST:event_bMasInfoActionPerformed
+
+    private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
+        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 6));
+        int intIdJuego = Integer.parseInt(strIdJuego);
+        getConexion().comprarJuegoGamezoides(jlUsuario.getText(), intIdJuego);
+    }//GEN-LAST:event_buyButtonActionPerformed
 
     public static void main(String args[]) {
 

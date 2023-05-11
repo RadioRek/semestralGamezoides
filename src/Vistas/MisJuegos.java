@@ -24,11 +24,11 @@ public class MisJuegos extends javax.swing.JFrame {
         panelPrincipal = new javax.swing.JPanel();
         bActualizar = new javax.swing.JButton();
         bVolver = new javax.swing.JButton();
-        jlUsuario = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabJuegos = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        quitarButton = new javax.swing.JButton();
+        venderButton = new javax.swing.JButton();
+        jlUsuario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -49,7 +49,7 @@ public class MisJuegos extends javax.swing.JFrame {
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
         panelPrincipal.add(bActualizar, gridBagConstraints);
 
         bVolver.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
@@ -67,14 +67,8 @@ public class MisJuegos extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
         panelPrincipal.add(bVolver, gridBagConstraints);
-
-        jlUsuario.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        panelPrincipal.add(jlUsuario, gridBagConstraints);
 
         tabJuegos.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         tabJuegos.setModel(new javax.swing.table.DefaultTableModel(
@@ -92,24 +86,38 @@ public class MisJuegos extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
         panelPrincipal.add(jScrollPane2, gridBagConstraints);
 
-        jButton1.setText("Quitar favorito");
+        quitarButton.setText("Quitar favorito");
+        quitarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitarButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
-        panelPrincipal.add(jButton1, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        panelPrincipal.add(quitarButton, gridBagConstraints);
 
-        jButton2.setText("Vender Juego");
+        venderButton.setText("Vender Juego");
+        venderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                venderButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
-        panelPrincipal.add(jButton2, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
+        panelPrincipal.add(venderButton, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        panelPrincipal.add(jlUsuario, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -129,6 +137,18 @@ public class MisJuegos extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_bVolverActionPerformed
 
+    private void quitarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarButtonActionPerformed
+        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 1));
+        int intIdJuego = Integer.parseInt(strIdJuego);
+        getConexion().quitarFavorito(intIdJuego, jlUsuario.getText());
+    }//GEN-LAST:event_quitarButtonActionPerformed
+
+    private void venderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venderButtonActionPerformed
+        ventaJuego ven = new ventaJuego();
+        ven.usuarioLabel.setText(jlUsuario.getText());
+        ven.setVisible(true);
+    }//GEN-LAST:event_venderButtonActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -141,11 +161,11 @@ public class MisJuegos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bActualizar;
     private javax.swing.JButton bVolver;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JLabel jlUsuario;
     private javax.swing.JPanel panelPrincipal;
+    private javax.swing.JButton quitarButton;
     private javax.swing.JTable tabJuegos;
+    private javax.swing.JButton venderButton;
     // End of variables declaration//GEN-END:variables
 }

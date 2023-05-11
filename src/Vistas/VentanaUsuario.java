@@ -23,16 +23,15 @@ public class VentanaUsuario extends javax.swing.JFrame {
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         panelPrincipal.setLayout(new java.awt.GridBagLayout());
-        getContentPane().add(panelPrincipal, new java.awt.GridBagConstraints());
 
         jlBienvenido.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jlBienvenido.setText("PlaceHolder");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        getContentPane().add(jlBienvenido, gridBagConstraints);
+        panelPrincipal.add(jlBienvenido, gridBagConstraints);
 
         bMisJuegos.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         bMisJuegos.setText("Mis juegos");
@@ -45,10 +44,11 @@ public class VentanaUsuario extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        getContentPane().add(bMisJuegos, gridBagConstraints);
+        panelPrincipal.add(bMisJuegos, gridBagConstraints);
 
         bBuscarJuegos.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         bBuscarJuegos.setText("Buscar juegos");
@@ -61,10 +61,11 @@ public class VentanaUsuario extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        getContentPane().add(bBuscarJuegos, gridBagConstraints);
+        panelPrincipal.add(bBuscarJuegos, gridBagConstraints);
 
         bAnadir.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         bAnadir.setText("Añadir juegos");
@@ -77,19 +78,23 @@ public class VentanaUsuario extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        getContentPane().add(bAnadir, gridBagConstraints);
+        panelPrincipal.add(bAnadir, gridBagConstraints);
 
         labelBienvenido.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         labelBienvenido.setText("Bienvenido:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        getContentPane().add(labelBienvenido, gridBagConstraints);
+        panelPrincipal.add(labelBienvenido, gridBagConstraints);
+
+        getContentPane().add(panelPrincipal, new java.awt.GridBagConstraints());
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
