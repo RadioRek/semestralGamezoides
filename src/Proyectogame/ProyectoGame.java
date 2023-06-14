@@ -1,6 +1,6 @@
 package Proyectogame;
 
-import Vistas.*;
+import Vistas.InicioSesion;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import javax.swing.UIManager;
 
@@ -10,10 +10,10 @@ public class ProyectoGame {
 
         try {
             UIManager.setLookAndFeel(new FlatDarculaLaf());
-        } catch (Exception e) {
-
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize LaF");
         }
-
         new InicioSesion().setVisible(true);
+
     }
 }

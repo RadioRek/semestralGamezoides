@@ -1,13 +1,15 @@
 package Vistas;
 
 import static Controlador.Conexion.getConexion;
+import static Proyectogame.Transaccion.getTransaccion;
+import javax.swing.JOptionPane;
 
 public class ventaJuego extends javax.swing.JFrame {
 
     public ventaJuego() {
         initComponents();
         getConexion().conectar();
-        usuarioLabel.setVisible(false);
+        codJuegoLabel.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -17,14 +19,12 @@ public class ventaJuego extends javax.swing.JFrame {
 
         mainPanel = new javax.swing.JPanel();
         precioLabel = new javax.swing.JLabel();
-        codLabel = new javax.swing.JLabel();
         campoUser = new javax.swing.JTextField();
         campoPrecio = new javax.swing.JTextField();
-        campoCod = new javax.swing.JTextField();
         enviarButton = new javax.swing.JButton();
         cancelarButton = new javax.swing.JButton();
         paraLabel = new javax.swing.JLabel();
-        usuarioLabel = new javax.swing.JLabel();
+        codJuegoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -38,14 +38,6 @@ public class ventaJuego extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
         mainPanel.add(precioLabel, gridBagConstraints);
-
-        codLabel.setText("Codigo juego: ");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
-        mainPanel.add(codLabel, gridBagConstraints);
 
         campoUser.setPreferredSize(new java.awt.Dimension(200, 26));
         campoUser.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -73,19 +65,6 @@ public class ventaJuego extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
         mainPanel.add(campoPrecio, gridBagConstraints);
 
-        campoCod.setPreferredSize(new java.awt.Dimension(200, 26));
-        campoCod.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                campoCodKeyTyped(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
-        mainPanel.add(campoCod, gridBagConstraints);
-
         enviarButton.setText("Enviar solicitud venta");
         enviarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,7 +73,7 @@ public class ventaJuego extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
@@ -103,7 +82,7 @@ public class ventaJuego extends javax.swing.JFrame {
         cancelarButton.setText("Cancelar");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
         mainPanel.add(cancelarButton, gridBagConstraints);
@@ -118,7 +97,7 @@ public class ventaJuego extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        mainPanel.add(usuarioLabel, gridBagConstraints);
+        mainPanel.add(codJuegoLabel, gridBagConstraints);
 
         getContentPane().add(mainPanel, new java.awt.GridBagConstraints());
 
@@ -134,7 +113,7 @@ public class ventaJuego extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_campoUserKeyTyped
-                        
+
     private void campoPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoPrecioKeyTyped
         char c = evt.getKeyChar();
         if (!Character.isDigit(c)) {
@@ -145,18 +124,20 @@ public class ventaJuego extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_campoPrecioKeyTyped
 
-    private void campoCodKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoCodKeyTyped
-        char c = evt.getKeyChar();
-        if (!Character.isDigit(c)) {
-            evt.consume();
-        }
-        if (campoCod.getText().trim().length() >= 6) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_campoCodKeyTyped
-
     private void enviarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarButtonActionPerformed
-        getConexion().venderJuego(usuarioLabel.getText(), campoUser.getText(), Integer.parseInt(campoCod.getText()) , Integer.parseInt(campoPrecio.getText()));
+        if (!campoPrecio.getText().trim().isEmpty()
+                || !campoUser.getText().trim().isEmpty()) {
+            getTransaccion().setCodigo(Integer.parseInt(codJuegoLabel.getText()));
+            getTransaccion().setIdEstado(1);
+            getTransaccion().setPrecio(Integer.parseInt(campoPrecio.getText()));
+            getTransaccion().setTipoTransaccion("Venta");
+            getTransaccion().setUsuario(campoUser.getText());
+
+            getConexion().ingresarVenta(getTransaccion());
+        } else {
+            JOptionPane.showMessageDialog(null, "Falta rellenar campos", "Error", JOptionPane.PLAIN_MESSAGE);
+
+        }
     }//GEN-LAST:event_enviarButtonActionPerformed
 
     public static void main(String args[]) {
@@ -188,15 +169,13 @@ public class ventaJuego extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField campoCod;
     private javax.swing.JTextField campoPrecio;
     private javax.swing.JTextField campoUser;
     private javax.swing.JButton cancelarButton;
-    private javax.swing.JLabel codLabel;
+    public javax.swing.JLabel codJuegoLabel;
     private javax.swing.JButton enviarButton;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel paraLabel;
     private javax.swing.JLabel precioLabel;
-    public javax.swing.JLabel usuarioLabel;
     // End of variables declaration//GEN-END:variables
 }

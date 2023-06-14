@@ -1,17 +1,15 @@
 package Vistas;
 
-import Controlador.Conexion;
+import static Controlador.Conexion.getConexion;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 
 public class InicioSesion extends javax.swing.JFrame {
-    Conexion con = Conexion.getConexion();
 
     public InicioSesion() {
         initComponents();
         setLocationRelativeTo(null);
         AbstractDocument document1 = (AbstractDocument) jpContraseña.getDocument();
-        con.conectar();
         
     }
 
@@ -119,11 +117,11 @@ public class InicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bInicioActionPerformed
-        
-        con.conectar();
+
+        getConexion().conectar();
 
         if (jtUsuario.getText().trim().matches("^[a-zA-Z0-9_\\-\\.]+@[a-zA-Z0-9_\\-\\.]+\\.[a-zA-Z]{2,4}$")) {
-            if (con.iniciarSesion(jtUsuario.getText(), jpContraseña.getText())) {
+            if (getConexion().iniciarSesion(jtUsuario.getText(), jpContraseña.getText())) {
                 VentanaUsuario veUs = new VentanaUsuario();
                 veUs.jlBienvenido.setText(jtUsuario.getText());
                 veUs.bAnadir.setVisible(false);

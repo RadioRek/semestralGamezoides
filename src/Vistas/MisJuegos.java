@@ -13,7 +13,7 @@ public class MisJuegos extends javax.swing.JFrame {
         getConexion().conectar();
         DefaultTableModel model = (DefaultTableModel) tabJuegos.getModel();
         model.setRowCount(0);
-        getConexion().llenarTablaFavoritos(tabJuegos, jlUsuario.getText());
+        getConexion().llenarTablaMisJuegos(tabJuegos, jlUsuario.getText());
     }
 
     @SuppressWarnings("unchecked")
@@ -23,7 +23,7 @@ public class MisJuegos extends javax.swing.JFrame {
 
         panelPrincipal = new javax.swing.JPanel();
         bActualizar = new javax.swing.JButton();
-        bVolver = new javax.swing.JButton();
+        bAgregarFavorito = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabJuegos = new javax.swing.JTable();
         quitarButton = new javax.swing.JButton();
@@ -37,9 +37,9 @@ public class MisJuegos extends javax.swing.JFrame {
 
         bActualizar.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         bActualizar.setText("Actualizar");
-        bActualizar.setMaximumSize(new java.awt.Dimension(150, 25));
-        bActualizar.setMinimumSize(new java.awt.Dimension(150, 25));
-        bActualizar.setPreferredSize(new java.awt.Dimension(150, 25));
+        bActualizar.setMaximumSize(new java.awt.Dimension(150, 26));
+        bActualizar.setMinimumSize(new java.awt.Dimension(150, 26));
+        bActualizar.setPreferredSize(new java.awt.Dimension(150, 26));
         bActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bActualizarActionPerformed(evt);
@@ -52,14 +52,14 @@ public class MisJuegos extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
         panelPrincipal.add(bActualizar, gridBagConstraints);
 
-        bVolver.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        bVolver.setText("Volver");
-        bVolver.setMaximumSize(new java.awt.Dimension(150, 25));
-        bVolver.setMinimumSize(new java.awt.Dimension(150, 25));
-        bVolver.setPreferredSize(new java.awt.Dimension(150, 25));
-        bVolver.addActionListener(new java.awt.event.ActionListener() {
+        bAgregarFavorito.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        bAgregarFavorito.setText("Añadir favorito");
+        bAgregarFavorito.setMaximumSize(new java.awt.Dimension(150, 26));
+        bAgregarFavorito.setMinimumSize(new java.awt.Dimension(150, 26));
+        bAgregarFavorito.setPreferredSize(new java.awt.Dimension(150, 26));
+        bAgregarFavorito.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bVolverActionPerformed(evt);
+                bAgregarFavoritoActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -68,7 +68,7 @@ public class MisJuegos extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
-        panelPrincipal.add(bVolver, gridBagConstraints);
+        panelPrincipal.add(bAgregarFavorito, gridBagConstraints);
 
         tabJuegos.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         tabJuegos.setModel(new javax.swing.table.DefaultTableModel(
@@ -76,7 +76,7 @@ public class MisJuegos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Titulo", "Codigo", "Favorito", "Adquirido"
+                "Titulo", "Favorito", "Codigo"
             }
         ));
         jScrollPane2.setViewportView(tabJuegos);
@@ -90,6 +90,9 @@ public class MisJuegos extends javax.swing.JFrame {
         panelPrincipal.add(jScrollPane2, gridBagConstraints);
 
         quitarButton.setText("Quitar favorito");
+        quitarButton.setMaximumSize(new java.awt.Dimension(150, 26));
+        quitarButton.setMinimumSize(new java.awt.Dimension(150, 26));
+        quitarButton.setPreferredSize(new java.awt.Dimension(150, 26));
         quitarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 quitarButtonActionPerformed(evt);
@@ -103,6 +106,9 @@ public class MisJuegos extends javax.swing.JFrame {
         panelPrincipal.add(quitarButton, gridBagConstraints);
 
         venderButton.setText("Vender Juego");
+        venderButton.setMaximumSize(new java.awt.Dimension(150, 26));
+        venderButton.setMinimumSize(new java.awt.Dimension(150, 26));
+        venderButton.setPreferredSize(new java.awt.Dimension(150, 26));
         venderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 venderButtonActionPerformed(evt);
@@ -130,22 +136,22 @@ public class MisJuegos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bActualizarActionPerformed
-        getConexion().llenarTablaFavoritos(tabJuegos, jlUsuario.getText());
+        getConexion().llenarTablaMisJuegos(tabJuegos, jlUsuario.getText());
     }//GEN-LAST:event_bActualizarActionPerformed
 
-    private void bVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVolverActionPerformed
-        dispose();
-    }//GEN-LAST:event_bVolverActionPerformed
+    private void bAgregarFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarFavoritoActionPerformed
+        int IdJuego = Integer.parseInt(String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 2)));
+        getConexion().agregarFavorito(IdJuego);
+    }//GEN-LAST:event_bAgregarFavoritoActionPerformed
 
     private void quitarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarButtonActionPerformed
-        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 1));
-        int intIdJuego = Integer.parseInt(strIdJuego);
-        getConexion().quitarFavorito(intIdJuego, jlUsuario.getText());
+        int IdJuego = Integer.parseInt(String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 2)));
+        getConexion().quitarFavorito(IdJuego);
     }//GEN-LAST:event_quitarButtonActionPerformed
 
     private void venderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venderButtonActionPerformed
         ventaJuego ven = new ventaJuego();
-        ven.usuarioLabel.setText(jlUsuario.getText());
+        ven.codJuegoLabel.setText(String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 2)));
         ven.setVisible(true);
     }//GEN-LAST:event_venderButtonActionPerformed
 
@@ -160,7 +166,7 @@ public class MisJuegos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bActualizar;
-    private javax.swing.JButton bVolver;
+    private javax.swing.JButton bAgregarFavorito;
     private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JLabel jlUsuario;
     private javax.swing.JPanel panelPrincipal;

@@ -107,12 +107,10 @@ public class VentanaUsuario extends javax.swing.JFrame {
         if (jlBienvenido.equals("ADMIN")) {
             BuscarJuegos buscar1 = new BuscarJuegos();
             buscar1.jlUsuario.setText(jlBienvenido.getText());
-            buscar1.bFavorito.setVisible(false);
             buscar1.setVisible(true);
         } else {
             BuscarJuegos buscar = new BuscarJuegos();
             buscar.jlUsuario.setText(jlBienvenido.getText());
-            buscar.bFavorito.setVisible(true);
             buscar.setVisible(true);
         }
     }//GEN-LAST:event_bBuscarJuegosActionPerformed

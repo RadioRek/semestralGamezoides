@@ -7,9 +7,10 @@ public class Usuario {
     private String correo;
     private String nombre;
     private String apellido;
-    private String sexo;
     private String password;
     private Date fecNac;
+    private String sexo;
+    
     private static Usuario miUsuario;
 
     private Usuario() {

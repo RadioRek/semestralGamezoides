@@ -24,7 +24,6 @@ public class BuscarJuegos extends javax.swing.JFrame {
         cBuscar = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabJuegos = new javax.swing.JTable();
-        bFavorito = new javax.swing.JButton();
         labelBuscar = new javax.swing.JLabel();
         jtBusqueda = new javax.swing.JTextField();
         bBuscar = new javax.swing.JButton();
@@ -38,7 +37,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
         mainPanel.setLayout(new java.awt.GridBagLayout());
 
         cBuscar.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        cBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Titulo", "Estudio", "Plataforma", "Rating" }));
+        cBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Titulo", "Estudio" }));
         cBuscar.setMinimumSize(new java.awt.Dimension(92, 25));
         cBuscar.setPreferredSize(new java.awt.Dimension(92, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -57,16 +56,13 @@ public class BuscarJuegos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Titulo", "Estudio", "Plataforma", "Idioma", "Valor", "Rating", "Codigo"
+                "Titulo", "Estudio", "Precio"
             }
         ));
         jScrollPane1.setViewportView(tabJuegos);
         if (tabJuegos.getColumnModel().getColumnCount() > 0) {
             tabJuegos.getColumnModel().getColumn(0).setPreferredWidth(175);
-            tabJuegos.getColumnModel().getColumn(3).setPreferredWidth(50);
-            tabJuegos.getColumnModel().getColumn(4).setPreferredWidth(50);
-            tabJuegos.getColumnModel().getColumn(5).setPreferredWidth(50);
-            tabJuegos.getColumnModel().getColumn(6).setPreferredWidth(50);
+            tabJuegos.getColumnModel().getColumn(2).setPreferredWidth(50);
         }
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -76,24 +72,6 @@ public class BuscarJuegos extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         mainPanel.add(jScrollPane1, gridBagConstraints);
-
-        bFavorito.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        bFavorito.setText("Añadir a favoritos");
-        bFavorito.setMaximumSize(new java.awt.Dimension(150, 25));
-        bFavorito.setMinimumSize(new java.awt.Dimension(150, 25));
-        bFavorito.setPreferredSize(new java.awt.Dimension(150, 25));
-        bFavorito.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bFavoritoActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        mainPanel.add(bFavorito, gridBagConstraints);
 
         labelBuscar.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         labelBuscar.setText("Buscar por:");
@@ -129,6 +107,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         mainPanel.add(bBuscar, gridBagConstraints);
@@ -185,20 +164,19 @@ public class BuscarJuegos extends javax.swing.JFrame {
         } else {
             DefaultTableModel model = (DefaultTableModel) tabJuegos.getModel();
             model.setRowCount(0);
-            getConexion().llenarTablaFiltro(tabJuegos, jtBusqueda.getText(), String.valueOf(cBuscar.getSelectedItem()));
+            String filtro = "tituloJuego";
+            if (String.valueOf(cBuscar.getSelectedItem()).equals("Titulo")) {
+                filtro = "tituloJuego";
+            } else if (String.valueOf(cBuscar.getSelectedItem()).equals("Estudio")) {
+                filtro = "estudioJuego";
+            }
+            getConexion().llenarTablaFiltro(tabJuegos, jtBusqueda.getText(), filtro);
         }
     }//GEN-LAST:event_bBuscarActionPerformed
 
-    private void bFavoritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFavoritoActionPerformed
-        int intIdJuego = Integer.parseInt(String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 6)));
-        if (!getConexion().revisarFavorito(intIdJuego, jlUsuario.getText())) {
-            getConexion().agregarFavorito(intIdJuego, jlUsuario.getText());
-        } 
-    }//GEN-LAST:event_bFavoritoActionPerformed
-
     private void bMasInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bMasInfoActionPerformed
         MasInfo mInfo = new MasInfo();
-        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 6));
+        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 2));
         int intIdJuego = Integer.parseInt(strIdJuego);
         getConexion().obtenerMasInfo(intIdJuego, mInfo.jlImagen, mInfo.jtaDesc);
         mInfo.revalidate();
@@ -209,7 +187,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
     }//GEN-LAST:event_bMasInfoActionPerformed
 
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
-        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 6));
+        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 2));
         int intIdJuego = Integer.parseInt(strIdJuego);
         getConexion().comprarJuegoGamezoides(jlUsuario.getText(), intIdJuego);
     }//GEN-LAST:event_buyButtonActionPerformed
@@ -225,7 +203,6 @@ public class BuscarJuegos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bBuscar;
-    public javax.swing.JButton bFavorito;
     private javax.swing.JButton bMasInfo;
     private javax.swing.JButton buyButton;
     private javax.swing.JComboBox<String> cBuscar;
