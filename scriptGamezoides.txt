@@ -1,0 +1,50 @@
+CREATE TABLE usuario (
+	correoUsuario VARCHAR(80),
+    nombreUsuario VARCHAR(50),
+    apellidoUsuario VARCHAR(50),
+    passwordUsuario VARCHAR(80),
+    fechaNacUsuario DATE,
+    sexoUsuario VARCHAR(20),
+	PRIMARY KEY (correoUsuario)
+);
+
+CREATE TABLE juego (
+    codJuego INT AUTO_INCREMENT,
+    tituloJuego VARCHAR(50),
+    estudioJuego VARCHAR(50),
+    descJuego VARCHAR(300),
+    precioJuego DECIMAL(5,2),
+    imgJuego LONGBLOB,
+    PRIMARY KEY (codJuego)
+);
+
+CREATE TABLE juegoAdquirido (
+    codJuegoUsuario INT AUTO_INCREMENT,
+    favorito VARCHAR(10),
+    correoUsuario VARCHAR(80),
+    codJuego INT,
+    FOREIGN KEY (correoUsuario) REFERENCES usuario(correoUsuario),
+    FOREIGN KEY (codJuego) REFERENCES juego(codJuego),
+    PRIMARY KEY (codJuegoUsuario)
+);
+
+CREATE TABLE estadoTransaccion (
+    idEstado INT AUTO_INCREMENT,
+    estadoTransaccion VARCHAR(45),
+    PRIMARY KEY (idEstado)
+);
+
+CREATE TABLE transaccion (
+    idTransaccion INT AUTO_INCREMENT,
+    precioCompra DECIMAL(5, 2),
+    fechaTransaccion DATETIME,
+    tipoTransaccion VARCHAR(30),
+    correoUsuario VARCHAR(80),
+    codJuegoUsuario INT,
+    idEstado INT,
+    PRIMARY KEY (idTransaccion),
+    FOREIGN KEY (correoUsuario) REFERENCES usuario(correoUsuario),
+    FOREIGN KEY (codJuegoUsuario) REFERENCES juegoAdquirido(codJuegoUsuario),
+    FOREIGN KEY (idEstado) REFERENCES estadoTransaccion(idEstado)
+);
+
