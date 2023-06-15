@@ -1,11 +1,11 @@
 CREATE TABLE usuario (
-	correoUsuario VARCHAR(80),
+    correoUsuario VARCHAR(80),
     nombreUsuario VARCHAR(50),
     apellidoUsuario VARCHAR(50),
     passwordUsuario VARCHAR(80),
     fechaNacUsuario DATE,
     sexoUsuario VARCHAR(20),
-	PRIMARY KEY (correoUsuario)
+    PRIMARY KEY (correoUsuario)
 );
 
 CREATE TABLE juego (
