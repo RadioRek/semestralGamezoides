@@ -3,6 +3,7 @@ package Controlador;
 import Proyectogame.Juego;
 import Proyectogame.Transaccion;
 import Proyectogame.Usuario;
+import Vistas.PopUpVenta;
 import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -70,6 +71,7 @@ public class Conexion {
                 JOptionPane.showMessageDialog(null, "Contraseña o usuario incorrecto", "No se ha podido ingresar",
                         JOptionPane.PLAIN_MESSAGE);
                 declaracion.close();
+                resultado.close();
                 return false;
             }
         } catch (SQLException ex) {
@@ -83,7 +85,7 @@ public class Conexion {
     public boolean agregarUsuario(Usuario us) {
         try {
             String insertSQL = "INSERT INTO usuario "
-                    + "(correoUsuario, nombre, apellido, passwordUsuario, fechaNacUsuario, sexoUsuario) "
+                    + "(correoUsuario, nombreUsuario, apellidoUsuario, passwordUsuario, fechaNacUsuario, sexoUsuario) "
                     + "VALUES (?, ?, ?, ?, ?, ?);";
 
             PreparedStatement dec = con.prepareStatement(insertSQL);
@@ -114,7 +116,7 @@ public class Conexion {
             dec.setString(1, ju.getTitulo());
             dec.setString(2, ju.getEstudio());
             dec.setString(3, ju.getDescripcion());
-            dec.setInt(4, ju.getPrecio());
+            dec.setFloat(4, ju.getPrecio());
             dec.setBlob(5, ju.getCaratula());
             dec.executeUpdate();
             dec.close();
@@ -131,7 +133,7 @@ public class Conexion {
     public void llenarTabla(JTable tabla) {
         try {
             String declaracionSQL = "SELECT "
-                    + "tituloJuego, estudioJuego, precioJuego  "
+                    + "tituloJuego, estudioJuego, precioJuego, codJuego "
                     + "FROM juego;";
 
             PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
@@ -143,15 +145,16 @@ public class Conexion {
             declaracion.close();
             resultado.close();
 
-            String[] columnNames = {"Titulo", "Estudio", "Precio"};
+            String[] columnNames = {"Titulo", "Estudio", "Precio", "Codigo"};
             DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
 
             while (cachedRowSet.next()) {
                 String titulo = cachedRowSet.getString("tituloJuego");
                 String estudio = cachedRowSet.getString("estudioJuego");
                 String valor = String.valueOf(cachedRowSet.getInt("precioJuego"));
+                String codJuego = String.valueOf(cachedRowSet.getInt("codJuego"));
 
-                String[] rowData = {titulo, estudio, valor};
+                String[] rowData = {titulo, estudio, valor, codJuego};
                 dtm.addRow(rowData);
             }
             tabla.setModel(dtm);
@@ -166,7 +169,7 @@ public class Conexion {
     public void llenarTablaFiltro(JTable tabla, String busqueda, String filtro) {
         try {
             String declaracionSQL = "SELECT "
-                    + "tituloJuego, estudioJuego, precioJuego "
+                    + "tituloJuego, estudioJuego, precioJuego, codJuego "
                     + "FROM juego "
                     + "WHERE " + filtro + " = ?;";
 
@@ -180,15 +183,16 @@ public class Conexion {
             declaracion.close();
             resultado.close();
 
-            String[] columnNames = {"Titulo", "Estudio", "Precio"};
+            String[] columnNames = {"Titulo", "Estudio", "Precio", "Codigo"};
             DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
 
             while (cachedRowSet.next()) {
                 String titulo = cachedRowSet.getString("tituloJuego");
                 String estudio = cachedRowSet.getString("estudioJuego");
                 String valor = String.valueOf(cachedRowSet.getInt("precioJuego"));
+                String codJuego = String.valueOf(cachedRowSet.getInt("codJuego"));
 
-                String[] rowData = {titulo, estudio, valor};
+                String[] rowData = {titulo, estudio, valor, codJuego};
                 dtm.addRow(rowData);
             }
             tabla.setModel(dtm);
@@ -245,13 +249,20 @@ public class Conexion {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion" + ex.getMessage(), "Error",
                     JOptionPane.PLAIN_MESSAGE);
         }
+
+        String tituloJuego;
+        String codigoJuego;
+        int precioJuego;
+        
+    
+
+ 
     }
 
     // METODO LLENAR TABLA FAVORITOS LISTO!
     public void llenarTablaMisJuegos(JTable tabla, String usuario) {
         try {
-            String declaracionSQL = "SELECT "
-                    + "jug.tituloJuego, adq.favorito, adq.codJuegoUsuario "
+            String declaracionSQL = "SELECT jug.tituloJuego, adq.favorito, adq.codJuegoUsuario "
                     + "FROM juegoAdquirido adq JOIN juego jug ON(adq.codJuego = jug.codJuego) "
                     + "WHERE adq.correoUsuario = ?;";
 
@@ -269,9 +280,9 @@ public class Conexion {
             DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
 
             while (cachedRowSet.next()) {
-                String titulo = cachedRowSet.getString("jug.tituloJuego");
-                String favorito = cachedRowSet.getString("adq.favorito");
-                String codJuego = String.valueOf(cachedRowSet.getInt("adq.codJuegoUsuario"));
+                String titulo = cachedRowSet.getString("tituloJuego");
+                String favorito = cachedRowSet.getString("favorito");
+                String codJuego = String.valueOf(cachedRowSet.getInt("codJuegoUsuario"));
 
                 String[] rowData = {titulo, favorito, codJuego};
                 dtm.addRow(rowData);
@@ -348,6 +359,58 @@ public class Conexion {
             declaracion.executeUpdate();
             declaracion.close();
             JOptionPane.showMessageDialog(null, "Se envio la solicitud exitosamente", "Exito", JOptionPane.PLAIN_MESSAGE);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion" + ex.getMessage(), "Error",
+                    JOptionPane.PLAIN_MESSAGE);
+        }
+    }
+
+    public void revisarTransaccion(String usuario) {
+        try {
+            String declaracionSQL = "SELECT * "
+                    + "FROM transaccion "
+                    + "WHERE correoUsuario = ?";
+            PreparedStatement declaracion = con.prepareStatement(declaracionSQL);
+            declaracion.setString(1, usuario);
+            ResultSet resultado = declaracion.executeQuery();
+            if (resultado.next()) {
+                while (resultado.next()) {
+                    String precio = String.valueOf(resultado.getInt("precioCompra"));
+                    String vendedor = resultado.getString("correoUsuario");
+                    String nombreJuego = "";
+                    int idJuego = resultado.getInt("codJuegoUsuario");
+                    try {
+                        String decCodigoJuego = "SELECT codJuego FROM juegoAdquirido WHERE codJuegoUsuario = ?";
+                        PreparedStatement prepdecCodigoJuego = con.prepareStatement(decCodigoJuego);
+                        prepdecCodigoJuego.setInt(1, idJuego);
+                        ResultSet resCodJuego = prepdecCodigoJuego.executeQuery();
+                        if (resCodJuego.next()) {
+                            int codJuegoOr = resCodJuego.getInt("codJuego");
+                            String decNombreJuego = "SELECT tituloJuego FROM juego WHERE codJuego = ?";
+                            PreparedStatement prepDecNombreJuego = con.prepareStatement(decNombreJuego);
+                            prepDecNombreJuego.setInt(1, codJuegoOr);
+                            ResultSet resNomJuego = prepDecNombreJuego.executeQuery();
+                            if (resNomJuego.next()) {
+                                nombreJuego = resNomJuego.getString("tituloJuego");
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion" + ex.getMessage(), "Error",
+                                JOptionPane.PLAIN_MESSAGE);
+                    }
+                    PopUpVenta pop = new PopUpVenta();
+                    pop.labelJuegoName.setText(nombreJuego);
+                    pop.labelPrecioCambiar.setText(precio);
+                    pop.labelVendName.setText(vendedor);
+                    pop.setVisible(true);
+                    pop.pack();
+                }
+                declaracion.close();
+                resultado.close();
+            } else {
+                declaracion.close();
+                resultado.close();
+            }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error en conexion" + ex.getMessage(), "Error",
                     JOptionPane.PLAIN_MESSAGE);

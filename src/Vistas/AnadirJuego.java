@@ -243,9 +243,12 @@ public class AnadirJuego extends javax.swing.JFrame {
             getJuego().setTitulo(jtTitulo.getText());
             getJuego().setEstudio(jtEstudio.getText());
             getJuego().setDescripcion(jtaDesc.getText());
+            getJuego().setPrecio(Integer.valueOf(String.valueOf(jtValor.getText())));
             getConexion().conectar();
             if (getConexion().agregarJuego(getJuego())) {
                 dispose();
+            } else {
+                System.out.println("gay");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Falta rellenar campos", "Error", JOptionPane.PLAIN_MESSAGE);

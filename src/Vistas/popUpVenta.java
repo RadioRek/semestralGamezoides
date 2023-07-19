@@ -1,9 +1,9 @@
 
 package Vistas;
 
-public class popUpVenta extends javax.swing.JFrame {
+public class PopUpVenta extends javax.swing.JFrame {
 
-    public popUpVenta() {
+    public PopUpVenta() {
         initComponents();
     }
 
@@ -19,8 +19,8 @@ public class popUpVenta extends javax.swing.JFrame {
         labelJuegoName = new javax.swing.JLabel();
         botonPagar = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        labelPrecio = new javax.swing.JLabel();
+        labelPrecioCambiar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -77,21 +77,21 @@ public class popUpVenta extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
         mainPanel.add(botonCancelar, gridBagConstraints);
 
-        jLabel1.setText("Al precio:");
+        labelPrecio.setText("Al precio:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
-        mainPanel.add(jLabel1, gridBagConstraints);
+        mainPanel.add(labelPrecio, gridBagConstraints);
 
-        jLabel2.setText("PlaceHolder");
+        labelPrecioCambiar.setText("PlaceHolder");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(15, 15, 15, 15);
-        mainPanel.add(jLabel2, gridBagConstraints);
+        mainPanel.add(labelPrecioCambiar, gridBagConstraints);
 
         getContentPane().add(mainPanel, new java.awt.GridBagConstraints());
 
@@ -101,7 +101,7 @@ public class popUpVenta extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new popUpVenta().setVisible(true);
+                new PopUpVenta().setVisible(true);
             }
         });
     }
@@ -109,11 +109,11 @@ public class popUpVenta extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonCancelar;
     private javax.swing.JButton botonPagar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel labelJuego;
-    private javax.swing.JLabel labelJuegoName;
-    private javax.swing.JLabel labelVendName;
+    public javax.swing.JLabel labelJuegoName;
+    private javax.swing.JLabel labelPrecio;
+    public javax.swing.JLabel labelPrecioCambiar;
+    public javax.swing.JLabel labelVendName;
     private javax.swing.JLabel labelVendedor;
     private javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables

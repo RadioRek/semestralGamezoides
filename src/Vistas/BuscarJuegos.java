@@ -56,7 +56,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Titulo", "Estudio", "Precio"
+                "Titulo", "Estudio", "Precio", "Codigo"
             }
         ));
         jScrollPane1.setViewportView(tabJuegos);
@@ -176,7 +176,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
 
     private void bMasInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bMasInfoActionPerformed
         MasInfo mInfo = new MasInfo();
-        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 2));
+        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 3));
         int intIdJuego = Integer.parseInt(strIdJuego);
         getConexion().obtenerMasInfo(intIdJuego, mInfo.jlImagen, mInfo.jtaDesc);
         mInfo.revalidate();
@@ -187,7 +187,7 @@ public class BuscarJuegos extends javax.swing.JFrame {
     }//GEN-LAST:event_bMasInfoActionPerformed
 
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
-        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 2));
+        String strIdJuego = String.valueOf(tabJuegos.getModel().getValueAt(tabJuegos.getSelectedRow(), 3));
         int intIdJuego = Integer.parseInt(strIdJuego);
         getConexion().comprarJuegoGamezoides(jlUsuario.getText(), intIdJuego);
     }//GEN-LAST:event_buyButtonActionPerformed
